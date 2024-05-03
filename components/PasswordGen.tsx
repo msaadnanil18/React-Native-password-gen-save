@@ -23,11 +23,13 @@ console.log(id, 'idsss')
   };
 
   const sendPass = async() => {
-    // setLoading(true);
+    setLoading(true);
    const formData = {fieldPassword:inputPasswordField, password:inputPassword,}
    console.log(formData)
    await axios.post(`http://172.16.2.12:8000/api/password-gen/${id}`,formData)
-
+   setLoading(false)
+   setInputPassword(null)
+   setInputPasswordField(null)
   };
 
   const setPassword = useCallback(() => {
@@ -48,11 +50,7 @@ console.log(id, 'idsss')
 
   return (
     <View>
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <Text>Loading...</Text>
-        </View>
-      ) : (
+    
         <View>
           <View style={styles.formContainer}>
             <TextInput
@@ -95,9 +93,9 @@ console.log(id, 'idsss')
               <Text>Password Length: {length}</Text>
             </View>
           </View>
-          <Button title="Save" onPress={sendPass} />
+          <Button loading={loading} title="Save" onPress={sendPass} />
         </View>
-      )}
+    
     </View>
   );
 }

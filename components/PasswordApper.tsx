@@ -1,13 +1,25 @@
 import React from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { Card, Button, Image } from "react-native-elements";
 import axios from "axios";
 import { Passwords } from "./typs";
-import { NativeStackScreenProps, } from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { stackPramsList } from "./Index";
-type HomeProps = NativeStackScreenProps<stackPramsList, 'passwordAppear'>;
 
-const PasswordApper = ({navigation, route}:HomeProps) => {
+declare module "react-native-elements" {
+  export interface CardProps {
+    children?: React.ReactNode; // This line ensures that children can be explicitly defined
+  }
+}
+type HomeProps = NativeStackScreenProps<stackPramsList, "passwordAppear">;
+
+const PasswordApper = ({ navigation, route }: HomeProps) => {
   const [dataLoading, setDataLoading] = React.useState(false);
   const [authData, setAuthData] = React.useState<Passwords[]>([]);
   const { produtId } = route.params;
@@ -35,41 +47,51 @@ const PasswordApper = ({navigation, route}:HomeProps) => {
       <View>
         <View style={styles.generatePassword}>
           <Button
-          onPress={() => {
-            navigation.navigate('passwordgen',{id:produtId})
-          }}
+            onPress={() => {
+              navigation.navigate("passwordgen", { id: produtId });
+            }}
             style={styles.generatePasswordButton}
             title="Generate password"
           />
         </View>
-        {authData.map((u: any, i: any) => {
-          return (
-            <View key={i} style={styles.user}>
-              <Text style={styles.name}>{u.fieldPassword}</Text>
-              <Text style={styles.name}>{u.password}</Text>
-            </View>
-          );
-        })}
+        {dataLoading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <View>
+            {authData.map((item: any, index: any) => {
+              return (
+                // @ts-ignore
+                <Card key={index} containerStyle={styles.card}>
+                  <Text style={styles.name}>Field: {item.fieldPassword}</Text>
+                  <Text style={styles.name}>Password: {item.password}</Text>
+                </Card>
+              );
+            })}
+          </View>
+        )}
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  image: {
-    height: 180,
+  card: {
+    height: 80,
+    padding: 10,
+    marginVertical: 10, 
   },
-  name: {},
-  user: {},
+  name: {
+    fontSize: 18,
+  },
   generatePasswordButton: {
-    padding: 0,
-    margin: 0,
-    fontSize: 20,
-    color: 'green'
+    padding: 10,
+    margin: 10,
   },
   generatePassword: {
-    flex: 1,
-    width: 190,
+    alignItems: "flex-end", 
+    marginBottom: 18, 
+    marginHorizontal:10,
+    marginVertical:15
   },
 });
 

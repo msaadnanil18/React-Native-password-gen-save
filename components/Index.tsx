@@ -23,8 +23,22 @@ const Index = () => {
           title: "Sign Up Form",
         }}
       />
-      <stack.Screen name="passwordAppear" component={PasswordApper} initialParams={{produtId:'id'}} />
-      <stack.Screen name="passwordgen" component={PasswordGen} initialParams={{id:'id'}} />
+      <stack.Screen
+        name="passwordAppear"
+        component={PasswordApper}
+        initialParams={{ produtId: "id" }}
+        options={{
+          title: "Password Appear",
+        }}
+      />
+      <stack.Screen
+        name="passwordgen"
+        component={PasswordGen}
+        initialParams={{ id: "id" }}
+        options={{
+          title: "Generate your Password",
+        }}
+      />
     </stack.Navigator>
   );
 };
