@@ -5,7 +5,7 @@ import axios from "axios";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { stackPramsList } from "./Index";
 
-type HomeProps = NativeStackScreenProps<stackPramsList, "SignUpForm">;
+type HomeProps = NativeStackScreenProps<stackPramsList, 'passwordAppear'>;
 
 const SignUpForm = ({ navigation }: HomeProps) => {
   const [name, setName] = useState<string>("");
@@ -22,10 +22,11 @@ const SignUpForm = ({ navigation }: HomeProps) => {
 
   const handleSubmit = async () => {
     try {
-      // const formData = { name, email };
-      // await axios.post("http://172.16.2.12:8000/api/login", formData);
+      const formData = { name, email };
+    const response =  await axios.post("http://172.16.2.12:8000/api/login", formData);
+console.log(response.data._id, 'response')
       setNavigate(true);
-      navigation.navigate('passwordgen');
+      navigation.navigate('passwordAppear', {produtId:response.data._id});
     } catch (error) {
       console.log("error while save form", error);
     }
