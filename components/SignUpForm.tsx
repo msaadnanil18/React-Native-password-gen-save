@@ -4,13 +4,21 @@ import { Input, CheckBox, Button } from "react-native-elements";
 import axios from "axios";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { stackPramsList } from "./Index";
+import * as Yup from 'yup';
 
 type HomeProps = NativeStackScreenProps<stackPramsList, "passwordAppear">;
 
+const emailSchema = Yup.object().shape({ 
+  email:Yup.string().email().required()
+ })
+ const nameSchema = Yup.object().shape({ 
+  name:Yup.string().required()
+ })
 const SignUpForm = ({ navigation }: HomeProps) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [navigate, setNavigate] = React.useState<boolean>(false);
+
 
   const handleNameChange = (text: string) => {
     setName(text);
@@ -22,6 +30,8 @@ const SignUpForm = ({ navigation }: HomeProps) => {
 
   const handleSubmit = async () => {
     try {
+      await emailSchema.validate({ email }); 
+      await nameSchema.validate({ name }); 
       const formData = { name, email };
       const response = await axios.post(
         "http://172.16.2.12:8000/api/login",
@@ -31,6 +41,7 @@ const SignUpForm = ({ navigation }: HomeProps) => {
       setNavigate(true);
       navigation.navigate("passwordAppear", { produtId: response.data._id });
     } catch (error) {
+     
       console.log("error while save form", error);
     }
   };
@@ -42,8 +53,10 @@ const SignUpForm = ({ navigation }: HomeProps) => {
         value={name}
         onChangeText={handleNameChange}
         containerStyle={styles.input}
+      
       />
       <Input
+      
         placeholder="Email"
         value={email}
         onChangeText={handleEmailChange}
@@ -57,8 +70,8 @@ const SignUpForm = ({ navigation }: HomeProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding:10,
-    alignItems:'center'
+    padding: 10,
+    alignItems: "center",
   },
   input: {
     marginBottom: 10,

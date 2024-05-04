@@ -8,7 +8,7 @@ import PasswordApper from "./PasswordApper";
 
 export type stackPramsList = {
   SignUpForm: undefined;
-  passwordgen: { id: string };
+  passwordgen: { id: string, editPasswordId?:string };
   passwordAppear: { produtId: string };
 };
 
@@ -34,7 +34,7 @@ const Index = () => {
       <stack.Screen
         name="passwordgen"
         component={PasswordGen}
-        initialParams={{ id: "id" }}
+        initialParams={{ id: "id",editPasswordId:'id' }}
         options={{
           title: "Generate your Password",
         }}
