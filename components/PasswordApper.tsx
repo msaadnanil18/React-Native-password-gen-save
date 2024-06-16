@@ -14,7 +14,7 @@ import { stackPramsList } from "./Index";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 
 declare module "react-native-elements" {
-  export interface CardProps {
+  export interface CardProp {
     children?: React.ReactNode;
   }
 }
